@@ -10,20 +10,6 @@ T = 240/365 #Time to expiration in years
 sigma = 0.30 #Volatility
 
 
-def blackScholes(r, S, K, T, sigma, type="c"): #From BlackScholes project
-    """Calculate theoretical price of call/put."""
-    d1 = (np.log(S/K) + (r + sigma**2/2)*T)/(sigma*np.sqrt(T))
-    d2 = d1 - sigma*np.sqrt(T)
-    try:
-        if type == "c":
-            price = S*norm.cdf(d1, 0, 1) - K*np.exp(-r*T)*norm.cdf(d2, 0, 1)
-        elif type == "p":
-            price = K*np.exp(-r*T)*norm.cdf(-d2, 0, 1) - S*norm.cdf(-d1, 0, 1)
-        return price, bs(type, S, K, T, r, sigma)
-    except:
-        print("Please confirm option type, either 'c' for Call or 'p' for Put!")
-
-
 def delta_calc(r, S, K, T, sigma, type="c"):
     """Calculate delta of call/put."""
     d1 = (np.log(S/K) + (r + sigma**2/2)*T)/(sigma*np.sqrt(T))
@@ -90,7 +76,6 @@ def rho_calc(r, S, K, T, sigma, type="c"):
 
 option_type='c'
 
-print("Option Price: ", [round(x,3) for x in blackScholes(r, S, K, T, sigma, option_type)])
 print("       Delta: ", [round(x,3) for x in delta_calc(r, S, K, T, sigma, option_type)])
 print("       Gamma: ", [round(x,3) for x in gamma_calc(r, S, K, T, sigma, option_type)])
 print("       Vega : ", [round(x,3) for x in vega_calc(r, S, K, T, sigma, option_type)])
